@@ -1,0 +1,22 @@
+{
+  "name": "francois.mathieu/unit-test",
+  "require": {
+    "phpunit/phpunit": "^6.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Utils\\": "utils/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    },
+    "authors": [
+      {
+        "name": "François MATHIEU",
+        "email": "francois.mathieu@livexp.fr"
+      }
+    ]
+  }
+}
