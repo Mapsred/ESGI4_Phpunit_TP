@@ -76,4 +76,8 @@ class ExchangeTest extends TestCase
         $this->assertTrue($this->getExchange()->save());
     }
 
+    public function testDates()
+    {
+        $this->assertGreaterThan($this->getExchange()->getStartDate(), $this->getExchange()->getEndDate());
+    }
 }
