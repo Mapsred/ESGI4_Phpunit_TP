@@ -145,21 +145,27 @@ class Exchange
     /**
      * @return bool
      */
-    public function save()
+    public function isValid()
     {
-        $isValid = $this->getProduct()->isValid() &&
+        return $this->getProduct()->isValid() &&
             $this->getProduct()->getOwner()->isValid() &&
             $this->getStartDate() > new \DateTime() &&
             $this->getEndDate() > $this->getStartDate();
+    }
 
-        if ($isValid) {
-            if ($this->getReceiver()->getAge() < 18) {
-                $this->getEmailSender()->sendEmail($this->getReceiver(), "message");
-            }
-
-            $this->getDbConnection()->saveExchange($this);
+    /**
+     * @return bool
+     */
+    public function save()
+    {
+        if (!$this->isValid()) {
+            return false;
         }
 
-        return $isValid;
+        if ($this->getReceiver()->getAge() < 18) {
+            $this->getEmailSender()->sendEmail($this->getReceiver(), "message");
+        }
+
+        return $this->getDbConnection()->saveExchange($this);
     }
 }

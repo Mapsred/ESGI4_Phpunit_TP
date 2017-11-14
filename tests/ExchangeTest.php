@@ -80,4 +80,13 @@ class ExchangeTest extends TestCase
     {
         $this->assertGreaterThan($this->getExchange()->getStartDate(), $this->getExchange()->getEndDate());
     }
+
+    public function testIsNotSavedEndDateBeforeStartDate()
+    {
+        $this->getExchange()
+            ->setStartDate((new \DateTime())->add(new \DateInterval("PT2H")))
+            ->setEndDate((new \DateTime())->add(new \DateInterval("PT1H")));
+
+        $this->assertFalse($this->getExchange()->save());
+    }
 }
