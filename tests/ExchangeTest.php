@@ -26,32 +26,32 @@ class ExchangeTest extends TestCase
 
         /** @var User|\PHPUnit_Framework_MockObject_MockObject $owner */
         $owner = $this->createMock(User::class);
-        $owner->expects($this->any())->method("isValid")->will($this->returnValue(true));
+        $owner->expects($this->any())->method("isValid")->willReturn(true);
 
 
         /** @var Product|\PHPUnit_Framework_MockObject_MockObject $product */
         $product = $this->createMock(Product::class);
-        $product->expects($this->any())->method("isValid")->will($this->returnValue(true));
-        $product->expects($this->any())->method("getOwner")->will($this->returnValue($owner));
+        $product->expects($this->any())->method("isValid")->willReturn(true);
+        $product->expects($this->any())->method("getOwner")->willReturn($owner);
 
 
         /** @var User|\PHPUnit_Framework_MockObject_MockObject $receiver */
         $receiver = $this->createMock(User::class);
-        $receiver->expects($this->any())->method("isValid")->will($this->returnValue(true));
-        $receiver->expects($this->any())->method("getAge")->will($this->returnValue("17"));
+        $receiver->expects($this->any())->method("isValid")->willReturn(true);
+        $receiver->expects($this->any())->method("getAge")->willReturn("17");
 
 
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $dbConnection */
         $dbConnection = $this->createMock(DatabaseConnection::class);
-        $dbConnection->expects($this->any())->method("saveProduct")->will($this->returnValue(true));
-        $dbConnection->expects($this->any())->method("saveUser")->will($this->returnValue(true));
-        $dbConnection->expects($this->any())->method("saveExchange")->will($this->returnValue(true));
+        $dbConnection->expects($this->any())->method("saveProduct")->willReturn(true);
+        $dbConnection->expects($this->any())->method("saveUser")->willReturn(true);
+        $dbConnection->expects($this->any())->method("saveExchange")->willReturn(true);
 
 
         /** @var EmailSender|\PHPUnit_Framework_MockObject_MockObject $emailSender */
         $emailSender = $this->createMock(EmailSender::class);
-        $emailSender->expects($this->any())->method("sendEmail")->will($this->returnValue(true));
-        $emailSender->expects($this->any())->method("getMail")->will($this->returnValue("test@gmail.com"));
+        $emailSender->expects($this->any())->method("sendEmail")->willReturn(true);
+        $emailSender->expects($this->any())->method("getMail")->willReturn("test@gmail.com");
 
 
         $this->exchange
@@ -81,11 +81,19 @@ class ExchangeTest extends TestCase
         $this->assertGreaterThan($this->getExchange()->getStartDate(), $this->getExchange()->getEndDate());
     }
 
-    public function testIsNotSavedEndDateBeforeStartDate()
+    public function testIsNotSavedBecauseEndDateLesserThanStartDate()
     {
         $this->getExchange()
             ->setStartDate((new \DateTime())->add(new \DateInterval("PT2H")))
             ->setEndDate((new \DateTime())->add(new \DateInterval("PT1H")));
+
+        $this->assertFalse($this->getExchange()->save());
+    }
+
+    public function testIsNotSavedBecauseStartDateLesserThanNow()
+    {
+        $this->getExchange()
+            ->setStartDate((new \DateTime())->sub(new \DateInterval("PT2H")));
 
         $this->assertFalse($this->getExchange()->save());
     }
