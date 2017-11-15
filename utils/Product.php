@@ -16,7 +16,17 @@ class Product
 
     /** @var User $owner */
     private $owner;
+	
+	/** @var bool $status */
+	private $status;
 
+	function __construct($name, $status, $user)
+	{
+		$this->name = $name;
+		$this->status = $status;
+		$this->owner = $user;
+	}
+	
     /**
      * @return string
      */

@@ -93,9 +93,17 @@ class User
      */
     public function isValid()
     {
-        return $this->email !== null && filter_var($this->email, FILTER_VALIDATE_EMAIL) &&
+        return filter_var($this->email, FILTER_VALIDATE_EMAIL)
+		&& !empty($this->firstname)
+		&& !empty($this->lastname)
+		&& is_int($this->age)
+		&& $this->age >= 13;
+		
+		/*  
+			return $this->email !== null && filter_var($this->email, FILTER_VALIDATE_EMAIL) &&
             $this->lastname !== null &&
             $this->firstname !== null &&
             $this->age !== null && $this->age > 13;
+			*/
     }
 }

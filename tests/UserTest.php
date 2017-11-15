@@ -12,6 +12,7 @@ class UserTest extends TestCase
 
     public function setUp()
     {
+		//$this->user = new User("test@test.fr", "toto", "toto", 20);
         $this->user = new User();
         $this->user->setEmail("toto@gmail.com")->setFirstname("toto")->setLastname("tata")->setAge(14);
     }
@@ -58,4 +59,9 @@ class UserTest extends TestCase
     {
         $this->assertGreaterThan(13, $this->getUser()->getAge(), "Age should be greater than 13");
     }
+	
+	protected function tearDown()
+	{
+		$this->user = NULL;
+	}
 }

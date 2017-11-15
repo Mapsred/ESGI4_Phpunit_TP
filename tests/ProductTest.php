@@ -69,4 +69,10 @@ class ProductTest extends TestCase
     {
         $this->assertNotNull($this->getProduct()->getName());
     }
+	
+	protected function tearDown()
+	{
+		$this->product = NULL;
+	}
+	
 }
