@@ -20,6 +20,10 @@ class ExchangeTest extends TestCase
     /** @var Exchange $exchange */
     private $exchange;
 
+    /**
+     * Sets up the fixture, the exchange class and the mocks
+     * This method is called before a test is executed.
+     */
     protected function setUp()
     {
         $this->exchange = new Exchange();
@@ -64,6 +68,15 @@ class ExchangeTest extends TestCase
     }
 
     /**
+     * Tears down the fixture
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+        $this->exchange = null;
+    }
+
+    /**
      * @return Exchange
      */
     public function getExchange()
@@ -71,16 +84,30 @@ class ExchangeTest extends TestCase
         return $this->exchange;
     }
 
+    /**
+     * @covers Exchange::save()
+     */
     public function testSuccessSave()
     {
         $this->assertTrue($this->getExchange()->save());
     }
 
+    /**
+     * @covers Exchange::isValid()
+     * @covers Exchange::getEndDate()
+     * @covers Exchange::getStartDate()
+     */
     public function testDates()
     {
         $this->assertGreaterThan($this->getExchange()->getStartDate(), $this->getExchange()->getEndDate());
+        $this->assertTrue($this->getExchange()->isValid());
     }
 
+    /**
+     * @covers Exchange::save()
+     * @covers Exchange::getEndDate()
+     * @covers Exchange::getStartDate()
+     */
     public function testIsNotSavedBecauseEndDateLesserThanStartDate()
     {
         $this->getExchange()
@@ -90,6 +117,10 @@ class ExchangeTest extends TestCase
         $this->assertFalse($this->getExchange()->save());
     }
 
+    /**
+     * @covers Exchange::save()
+     * @covers Exchange::getStartDate()
+     */
     public function testIsNotSavedBecauseStartDateLesserThanNow()
     {
         $this->getExchange()
